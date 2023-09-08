@@ -1,0 +1,10 @@
+**/db/
+**/output_files/
+**/incremental_db/
+**/simulation/
+**/work/
+
+*.bak
+*.rpt
+*.qpf
+*.qsf
