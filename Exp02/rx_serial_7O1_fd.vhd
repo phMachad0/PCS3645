@@ -132,7 +132,7 @@ begin
             clock => clock, 
             clear => limpa, 
             enable => registra, 
-            D(0) => s_paridade,
+            D(0) => s_saida(9),
             Q(0) => paridade_recebida  
         );
     
