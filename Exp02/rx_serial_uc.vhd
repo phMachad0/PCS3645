@@ -17,7 +17,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity tx_serial_uc is 
+entity rx_serial_uc is 
     port ( 
         clock     : in  std_logic;
         reset     : in  std_logic;
@@ -37,7 +37,7 @@ entity tx_serial_uc is
     );
 end entity;
 
-architecture tx_serial_uc_arch of tx_serial_uc is
+architecture rx_serial_uc_arch of rx_serial_uc is
 
     type estado_receptor is (inicial, preparacao, espera, recepcao, armazena, final, dado_presente);
     signal Eatual: estado_receptor;  -- estado atual
@@ -124,4 +124,4 @@ begin
                    "1010" when dado_presente,    -- Final
                    "1111" when others;   -- Erro
 
-end architecture tx_serial_uc_arch;
+end architecture rx_serial_uc_arch;
