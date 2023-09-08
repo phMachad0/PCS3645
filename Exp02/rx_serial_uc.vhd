@@ -1,16 +1,12 @@
 ------------------------------------------------------------------
--- Arquivo   : tx_serial_uc.vhd
+-- Arquivo   : rx_serial_uc.vhd
 -- Projeto   : Experiencia 2 - Comunicacao Serial Assincrona
 ------------------------------------------------------------------
--- Descricao : unidade de controle do circuito da experiencia 2 
--- > implementa superamostragem (tick)
--- > independente da configuracao de transmissao (7O1, 8N2, etc)
+-- Descricao : unidade de controle do transmissor da exp 2
 ------------------------------------------------------------------
 -- Revisoes  :
 --     Data        Versao  Autor             Descricao
---     09/09/2021  1.0     Edson Midorikawa  versao inicial
---     31/08/2022  2.0     Edson Midorikawa  revisao
---     17/08/2023  3.0     Edson Midorikawa  revisao
+--     08/09/2023  1.0     Bruno Alcantara   versao inicial
 ------------------------------------------------------------------
 --
 
@@ -19,21 +15,21 @@ use ieee.std_logic_1164.all;
 
 entity rx_serial_uc is 
     port ( 
-        clock     : in  std_logic;
-        reset     : in  std_logic;
-        dado      : in  std_logic;
-        tick      : in  std_logic;
-        fim       : in  std_logic;
+        clock       : in  std_logic;
+        reset       : in  std_logic;
+        dado        : in  std_logic;
+        tick        : in  std_logic;
+        fim         : in  std_logic;
         recebe_dado : in  std_logic;
-        carrega   : out std_logic;
-        limpa     : out std_logic;
-        zera      : out std_logic;
-        desloca   : out std_logic;
-        conta     : out std_logic;
-        registra  : out std_logic;
-        pronto    : out std_logic;
-        tem_dado  : out std_logic;
-        db_estado : out std_logic_vector(3 downto 0)
+        carrega     : out std_logic;
+        limpa       : out std_logic;
+        zera        : out std_logic;
+        desloca     : out std_logic;
+        conta       : out std_logic;
+        registra    : out std_logic;
+        pronto      : out std_logic;
+        tem_dado    : out std_logic;
+        db_estado   : out std_logic_vector(3 downto 0)
     );
 end entity;
 
