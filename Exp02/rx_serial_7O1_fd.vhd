@@ -100,7 +100,7 @@ begin
 
     U2: contador_m 
         generic map (
-            M => 12, 
+            M => 11, 
             N => 4
         ) 
         port map (
