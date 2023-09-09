@@ -1,3 +1,15 @@
+------------------------------------------------------------------
+-- Arquivo   : rx_serial_701.vhd
+-- Projeto   : Experiencia 2 - Comunicacao Serial Assincrona
+------------------------------------------------------------------
+-- Descricao : circuito completo do receptor da exp2
+------------------------------------------------------------------
+-- Revisoes  :
+--     Data        Versao  Autor             Descricao
+--     08/09/2023  1.0     Bruno Alcantara   versao inicial
+------------------------------------------------------------------
+--
+
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -16,7 +28,7 @@ entity rx_serial_7O1 is
     );
 end entity;
 
-architecture rx_serial_7O1_arch of rx_serial_7O1 is
+architecture estrutural of rx_serial_7O1 is
      
     component rx_serial_uc is 
     port ( 
@@ -90,6 +102,7 @@ architecture rx_serial_7O1_arch of rx_serial_7O1 is
     signal s_saida_serial : std_logic;
     signal s_estado : std_logic_vector(3 downto 0);
     signal s_dado_recebido : std_logic_vector(6 downto 0);
+    signal s_dado_recebido1_hexa : std_logic_vector(3 downto 0);
 
 begin
 
@@ -157,9 +170,10 @@ begin
               sseg => dado_recebido0
           );
           
+    s_dado_recebido1_hexa <= '0' & s_dado_recebido(6 downto 4);
     HEX1: hexa7seg
           port map (
-              hexa => '0' & s_dado_recebido(6 downto 4),
+              hexa => s_dado_recebido1_hexa,
               sseg => dado_recebido1
           );
 

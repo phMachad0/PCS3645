@@ -2,7 +2,7 @@
 -- Arquivo   : rx_serial_uc.vhd
 -- Projeto   : Experiencia 2 - Comunicacao Serial Assincrona
 ------------------------------------------------------------------
--- Descricao : unidade de controle do transmissor da exp 2
+-- Descricao : unidade de controle do receptor da exp 2
 ------------------------------------------------------------------
 -- Revisoes  :
 --     Data        Versao  Autor             Descricao
