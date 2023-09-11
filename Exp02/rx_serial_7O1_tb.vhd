@@ -2,7 +2,7 @@
 -- Arquivo   : rx_serial_7O1_tb.vhd
 -- Projeto   : Experiencia 2 - Comunicacao Serial Assincrona
 ------------------------------------------------------------------------------
--- Descricao : testbench básico para circuito de recepcao serial 
+-- Descricao : testbench bï¿½sico para circuito de recepcao serial 
 --
 -- > contem recursos adicionais que devem ser aprendidos
 -- > 1) procedure em VHDL (UART_WRITE_BYTE)
@@ -25,7 +25,7 @@ end entity;
 
 architecture tb of rx_serial_tb is
   
-  -- Declaração de sinais para conectar o componente a ser testado (DUT)
+  -- Declaraï¿½ï¿½o de sinais para conectar o componente a ser testado (DUT)
   signal clock_in              : std_logic  := '0';
   signal reset_in              : std_logic  := '0';
   -- saidas
@@ -38,7 +38,7 @@ architecture tb of rx_serial_tb is
   signal entrada_serial_in : std_logic := '1';
   signal serialData        : std_logic_vector(7 downto 0) := "00000000";
 
-  -- Configurações do clock
+  -- Configuraï¿½ï¿½es do clock
   constant clockPeriod : time := 20 ns;            -- 50MHz
   -- constant bitPeriod   : time := 5208*clockPeriod; -- 5208 clocks por bit (9.600 bauds)
   constant bitPeriod   : time := 434*clockPeriod;  -- 434 clocks por bit (115.200 bauds)
@@ -79,13 +79,15 @@ architecture tb of rx_serial_tb is
   constant casos_teste : casos_teste_array :=
       (
         (1, "00110101"), -- 35H (dado=35H + paridade=0) erro para 7O1
-        (2, "10110101")  -- B5H (dado=35H + paridade=1) ok para 7O1
+        (2, "10110101"),  -- B5H (dado=35H + paridade=1) ok para 7O1
+        (3, "00111001"),  -- B5H (dado=39H + paridade=0) ok para 7O1
+        (4, "10110111")  -- B5H (dado=37H + paridade=1) ok para 7O1
         -- inserir aqui outros casos de teste (inserir "," na linha anterior)
       );
   signal caso : natural;
 
   ---- controle do clock e simulacao
-  signal keep_simulating: std_logic := '0'; -- delimita o tempo de geração do clock
+  signal keep_simulating: std_logic := '0'; -- delimita o tempo de geraï¿½ï¿½o do clock
   
   
 begin
@@ -93,7 +95,7 @@ begin
   ---- Gerador de Clock
   clock_in <= (not clock_in) and keep_simulating after clockPeriod/2;
  
-  -- Instanciação direta DUT (Device Under Test)
+  -- Instanciaï¿½ï¿½o direta DUT (Device Under Test)
   DUT: entity work.rx_serial_7O1 (estrutural)
        port map (  
            clock             => clock_in, 
@@ -150,7 +152,7 @@ begin
     assert false report "fim da simulacao" severity note;
     keep_simulating <= '0';
     
-    wait; -- fim da simulação: aguarda indefinidamente
+    wait; -- fim da simulaï¿½ï¿½o: aguarda indefinidamente
 
   end process stimulus;
 
