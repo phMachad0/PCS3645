@@ -42,7 +42,7 @@ architecture structure of contador_cm is
 
     component contador_cm_uc is
         port(
-           clock      : in std_logic;
+              clock      : in std_logic;
 			  reset      : in std_logic;
 			  fim        : in std_logic;
 			  tick       : in std_logic;
@@ -51,6 +51,7 @@ architecture structure of contador_cm is
 			  zera_bcd   : out std_logic;
 			  conta_tick : out std_logic;
 			  zera_tick  : out std_logic;
+              pronto     : out std_logic;
 			  db_estado  : out std_logic_vector(3 downto 0)
         );
     end component;
@@ -87,6 +88,9 @@ begin
         zera_tick  => s_zera_tick,
         fim        => s_fim,
         tick       => s_tick,
+        pronto     => pronto,
         db_estado  => db_estado
     );
+
+    fim <= s_fim;
 end architecture;

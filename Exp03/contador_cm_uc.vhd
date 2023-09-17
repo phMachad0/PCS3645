@@ -13,6 +13,7 @@ entity contador_cm_uc is
         zera_bcd   : out std_logic;
         conta_tick : out std_logic;
         zera_tick  : out std_logic;
+		  pronto     : out std_logic;
         db_estado  : out std_logic_vector(3 downto 0)
     );
 end entity;
@@ -69,6 +70,8 @@ begin
       conta_tick <= '1' when espera_tick | conta, '0' when others;
   with Eatual select 
       conta_bcd <= '1' when conta, '0' when others;
+  with Eatual select 
+      pronto <= '1' when final, '0' when others;
 
   with Eatual select
       db_estado <= "0001" when inicial, 
