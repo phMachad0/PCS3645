@@ -17,7 +17,7 @@ entity contador_cm_uc is
     );
 end entity;
 
-architecture assyncronous of contador_cm_uc is
+architecture asyncronous of contador_cm_uc is
 begin
     conta_tick <= pulso and not fim;
     zera_tick <= reset;
@@ -42,17 +42,18 @@ begin
     end process;
 
     -- logica de proximo estado
-    process (fim, tick, pulso) 
+    process (Eatual, fim, tick, pulso) 
     begin
       case Eatual is
         when inicial =>         if pulso='1' then Eprox <= preparacao;
                                 else              Eprox <= inicial;
                                 end if;
         when preparacao =>      Eprox <= espera_tick;
-        when espera_tick =>     if pulso='0'     then Eprox <= final;
-                                elsif tick='1'   then Eprox <= conta;
-                                else                  Eprox <= espera_tick;
+        when espera_tick =>     if pulso='0' or fim='1' then Eprox <= final;
+                                elsif tick='1'          then Eprox <= conta;
+                                else                    Eprox <= espera_tick;
                                 end if;
+        when conta =>           Eprox <= espera_tick;
         when final =>           Eprox <= inicial;
         when others =>          Eprox <= inicial;
       end case;

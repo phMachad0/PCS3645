@@ -42,16 +42,16 @@ architecture structure of contador_cm is
 
     component contador_cm_uc is
         port(
-            clock      : in std_logic;
-            reset      : in std_logic;
-            fim        : in std_logic;
-            tick       : in std_logic;
-            pulso      : in std_logic;
-            conta_bcd  : out std_logic;
-            zera_bcd   : out std_logic;
-            conta_tick : out std_logic;
-            zera_tick  : out std_logic;
-            db_estado  : out std_logic_vector(3 downto 0)
+           clock      : in std_logic;
+			  reset      : in std_logic;
+			  fim        : in std_logic;
+			  tick       : in std_logic;
+			  pulso      : in std_logic;
+			  conta_bcd  : out std_logic;
+			  zera_bcd   : out std_logic;
+			  conta_tick : out std_logic;
+			  zera_tick  : out std_logic;
+			  db_estado  : out std_logic_vector(3 downto 0)
         );
     end component;
 
@@ -76,7 +76,7 @@ begin
         tick       => s_tick
     );
 
-    UC: contador_cm_uc
+    UC: entity work.contador_cm_uc (asyncronous)
     port map(
         clock      => clock,
         reset      => reset,
