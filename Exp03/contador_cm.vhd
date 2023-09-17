@@ -4,8 +4,8 @@ use ieee.numeric_std.all;
 
 entity contador_cm is
     generic (
-        constant R : integer; --número de ciclos de clock de duração do sinal "echo" sinal correspondentes a 1cm de distância
-        constant N : integer --número de bits do contador_m interno tal que 2^N >= R
+        constant R : integer:= 2941; --número de ciclos de clock de duração do sinal "echo" sinal correspondentes a 1cm de distância
+        constant N : integer:= 12 --número de bits do contador_m interno tal que 2^N >= R
     );
     port (
         clock     : in  std_logic;
