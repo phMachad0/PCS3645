@@ -76,7 +76,7 @@ begin
         tick       => s_tick
     );
 
-    UC: entity work.contador_cm_uc (asyncronous)
+    UC: entity work.contador_cm_uc (fsm)
     port map(
         clock      => clock,
         reset      => reset,
