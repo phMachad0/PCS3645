@@ -45,19 +45,19 @@ architecture structure of interface_hcsr04 is
             db_estado  : out std_logic_vector(3 downto 0) 
         );
     end component;
-    signal s_pulso, s_zera, s_gera, s_registra, s_fim, s_fim_medida, s_trigger: std_logic;
+    signal s_zera, s_gera, s_registra, s_fim, s_fim_medida: std_logic;
 begin
     FD: interface_hcsr04_fd port map(
         clock      => clock,
         reset      => reset,
-        pulso      => s_pulso,
+        pulso      => echo,
         zera       => s_zera,
         gera       => s_gera,
         registra   => s_registra,
         distancia  => medida,
         fim        => s_fim,
         fim_medida => s_fim_medida,
-        trigger    => s_trigger
+        trigger    => trigger
     );
 
     UC: interface_hcsr04_uc port map(

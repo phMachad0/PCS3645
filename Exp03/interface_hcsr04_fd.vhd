@@ -68,8 +68,8 @@ begin
     s_clock <= clock;
     contador_cm_dut: contador_cm
         generic map (
-            R => 1000000000,
-            N => 4
+            R => 2941,
+            N => 12
         )
         port map (
             clock   => s_clock,
