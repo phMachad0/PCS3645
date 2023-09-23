@@ -51,13 +51,14 @@ architecture structure of exp3_sensor is
     signal s_medir: std_logic;
     signal s_medida: std_logic_vector(11 downto 0);
     signal s_db_estado: std_logic_vector(3 downto 0);
+	 signal s_trigger: std_logic;
 begin 
     interface: interface_hcsr04 port map(
         clock     => clock,
         reset     => reset,
         medir     => s_medir,
         echo      => echo,
-        trigger   => trigger,
+        trigger   => s_trigger,
         medida    => s_medida,
         pronto    => pronto,
         db_estado => s_db_estado
@@ -65,7 +66,7 @@ begin
 
     edge: edge_detector port map(
         clock => clock,
-        signal_in => medir,
+        signal_in => not medir,
         output => s_medir
     );
 
@@ -88,4 +89,8 @@ begin
         hexa => s_db_estado,
         sseg => db_estado
     );
+	 db_echo <= echo;
+	 db_trigger <= s_trigger;
+	 trigger <= s_trigger;
+	 db_medir <= s_medir;
 end architecture;

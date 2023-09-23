@@ -18,7 +18,6 @@ architecture structure of interface_hcsr04 is
     component interface_hcsr04_fd is
         port(
             clock       : in  std_logic;
-            reset       : in  std_logic;
             pulso       : in  std_logic;
             zera        : in  std_logic;
             gera        : in std_logic;
@@ -49,7 +48,6 @@ architecture structure of interface_hcsr04 is
 begin
     FD: interface_hcsr04_fd port map(
         clock      => clock,
-        reset      => reset,
         pulso      => echo,
         zera       => s_zera,
         gera       => s_gera,

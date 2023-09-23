@@ -55,7 +55,9 @@ begin
                                 else                    Eprox <= espera_tick;
                                 end if;
         when conta =>           Eprox <= espera_tick;
-        when final =>           Eprox <= inicial;
+        when final =>           if pulso='1' then Eprox <= inicial;
+										  else Eprox <= final;
+										  end if;
         when others =>          Eprox <= inicial;
       end case;
     end process;
@@ -64,7 +66,7 @@ begin
   with Eatual select 
       zera_tick <= '1' when preparacao, '0' when others;
   with Eatual select 
-      zera_bcd <= '1' when preparacao, '0' when others;
+      zera_bcd <= '1' when preparacao | inicial, '0' when others;
 
   with Eatual select 
       conta_tick <= '1' when espera_tick | conta, '0' when others;

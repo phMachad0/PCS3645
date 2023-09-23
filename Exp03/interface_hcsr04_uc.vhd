@@ -71,7 +71,7 @@ begin
 
   -- saidas de controle
   with Eatual select 
---      zera <= '1' when inicial | preparacao, '0' when others;
+ --     zera <= '1' when inicial | preparacao, '0' when others;
       zera <= '1' when preparacao, '0' when others;
   with Eatual select
       gera <= '1' when envia_trigger, '0' when others;

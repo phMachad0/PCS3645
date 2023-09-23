@@ -4,7 +4,6 @@ use ieee.std_logic_1164.all;
 entity interface_hcsr04_fd is
     port(
         clock       : in  std_logic;
-        reset       : in  std_logic;
         pulso       : in  std_logic;
         zera        : in  std_logic;
         gera        : in std_logic;
@@ -88,7 +87,7 @@ begin
         )
         port map (
             clock  => clock,
-            reset  => reset,
+            reset  => zera,
             gera   => gera,
             para   => '0',
             pulso  => trigger,
