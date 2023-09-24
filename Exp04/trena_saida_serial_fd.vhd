@@ -90,8 +90,7 @@ architecture structural of trena_saida_serial_fd is
     signal s_medida0, s_medida1, s_medida2: std_logic_vector(6 downto 0);
     signal s_mux_out: std_logic_vector(6 downto 0);
     signal s_medida: std_logic_vector(11 downto 0);
-    signal s_seletor : std_logic_vector(1 downto 0);
-    
+    signal s_saida_contador: std_logic_vector(2 downto 0);
 
 begin
     sensor: interface_hcsr04 port map(
@@ -120,14 +119,14 @@ begin
     );
 
     contador: contador_m generic map (
-        M => 3,
-        N => 2
+        M => 4,
+        N => 3
     )
     port map (
         clock => clock,
         zera => zera_contador,
         conta => aumenta_contador,
-        Q => s_seletor,
+        Q => s_saida_contador,
         fim => fim_contador
     );
 
@@ -136,11 +135,11 @@ begin
         BITS => 7
     )
     port map(
-        D3 => "0000000",
-        D2 => s_medida2,
+        D0 => s_medida2,
         D1 => s_medida1,
-        D0 => s_medida0,
-        SEL => s_seletor,
+        D2 => s_medida0,
+        D3 => "1000101",
+        SEL => s_saida_contador(1 downto 0),
         MUX_OUT => s_mux_out
     );
 
