@@ -136,7 +136,7 @@ begin
         BITS => 7
     )
     port map(
-        D3 => "0000",
+        D3 => "0000000",
         D2 => s_medida2,
         D1 => s_medida1,
         D0 => s_medida0,
