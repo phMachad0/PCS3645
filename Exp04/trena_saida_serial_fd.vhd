@@ -138,14 +138,14 @@ begin
         D0 => s_medida2,
         D1 => s_medida1,
         D2 => s_medida0,
-        D3 => "1000101",
+        D3 => "0100011",
         SEL => s_saida_contador(1 downto 0),
         MUX_OUT => s_mux_out
     );
 
-    s_medida0 <= "101" & s_medida(3 downto 0);
-    s_medida1 <= "101" & s_medida(7 downto 4);
-    s_medida2 <= "101" & s_medida(11 downto 8);
+    s_medida0 <= "011" & s_medida(3 downto 0);
+    s_medida1 <= "011" & s_medida(7 downto 4);
+    s_medida2 <= "011" & s_medida(11 downto 8);
     
     medida0 <= s_medida(3 downto 0);
     medida1 <= s_medida(7 downto 4);
