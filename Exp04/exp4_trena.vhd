@@ -13,6 +13,12 @@ entity exp4_trena is
     medida1 : out std_logic_vector (6 downto 0);
     medida2 : out std_logic_vector (6 downto 0);
     pronto : out std_logic;
+
+    --Depuração
+	db_mensurar : out std_logic;
+	db_saida_serial : out std_logic;
+	db_trigger : out std_logic;
+	db_echo : out std_logic;
     db_estado : out std_logic_vector (6 downto 0)
     );
 end entity exp4_trena;
@@ -91,6 +97,7 @@ architecture structural of exp4_trena is
     signal s_mensurar_pulso : std_logic;
     signal s_db_estado_4bits : std_logic_vector(3 downto 0);
     signal s_medida0, s_medida1, s_medida2 : std_logic_vector(3 downto 0);
+    signal s_saida_serial, s_trigger : std_logic;
 begin
 
     FD: trena_saida_serial_fd port map (
@@ -101,8 +108,8 @@ begin
         partida_serial => s_partida_serial,
         zera_contador => s_zera_contador,
         aumenta_contador => s_aumenta_contador,
-        trigger => trigger,
-        saida_serial => saida_serial,
+        trigger => s_trigger,
+        saida_serial => s_saida_serial,
         medida0 => s_medida0,
         medida1 => s_medida1,
         medida2 => s_medida2,
@@ -131,6 +138,11 @@ begin
         signal_in => mensurar,
         output => s_mensurar_pulso
     );
+
+    db_mensurar <= mensurar;
+    db_saida_serial <= s_saida_serial;
+    db_trigger <= s_trigger;
+    db_echo <= echo;
 
     HEX0: hexa7seg port map (
         hexa => s_medida0,
