@@ -98,6 +98,7 @@ architecture structural of exp4_trena is
     signal s_db_estado_4bits : std_logic_vector(3 downto 0);
     signal s_medida0, s_medida1, s_medida2 : std_logic_vector(3 downto 0);
     signal s_saida_serial, s_trigger : std_logic;
+    signal not_mensurar : std_logic;
 begin
 
     FD: trena_saida_serial_fd port map (
@@ -133,15 +134,18 @@ begin
         db_estado => s_db_estado_4bits
     );
 
+    not_mensurar <= not mensurar;
     edge: edge_detector port map (
         clock => clock,
-        signal_in => mensurar,
+        signal_in => not_mensurar,
         output => s_mensurar_pulso
     );
 
     db_mensurar <= mensurar;
     db_saida_serial <= s_saida_serial;
+	 saida_serial <= s_saida_serial;
     db_trigger <= s_trigger;
+	 trigger <= s_trigger;
     db_echo <= echo;
 
     HEX0: hexa7seg port map (
