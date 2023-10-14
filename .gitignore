@@ -9,3 +9,5 @@
 *.qpf
 *.qsf
 *.cf
+*.json
+*.zip
