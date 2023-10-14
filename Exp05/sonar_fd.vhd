@@ -169,7 +169,7 @@ begin
 
     contador_timer: contador_m
     generic map (
-        M => 100-000-000,
+        M => 100000000,
         N => 27
     )
     port map (
