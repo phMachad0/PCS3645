@@ -66,16 +66,11 @@ architecture tb of sonar_tb is
   type posicoes_teste_array is array (natural range <>) of posicoes_teste_type;
   constant posicoes_teste : posicoes_teste_array :=
       ( 
-        ( 1,  294),   --   5cm ( 294us)
-        ( 2,  353)    --   6cm ( 353us)
-        -- ( 2,  353),  --   6cm ( 353us)
-        -- ( 3, 5882),  -- 100cm (5882us)
-        -- ( 4, 5882),  -- 100cm (5882us)
-        -- ( 5,  882),  --  15cm ( 882us)
-        -- ( 6,  882),  --  15cm ( 882us)
-        -- ( 7, 5882),  -- 100cm (5882us)
-        -- ( 8,  588)   --  10cm ( 588us)
-        -- inserir aqui outros posicoes de teste (inserir "," na linha anterior)
+        ( 1,  294),   --   5cm  ( 294us)
+        ( 2,  353),   --   6cm  ( 353us)
+        ( 3,  588),   --   10cm ( 588us)
+        ( 4,  882),   --   15cm ( 882us)
+        ( 5, 1176)    --   15cm (1176us)
       );
 
   signal larguraPulso: time := 1 ns;
