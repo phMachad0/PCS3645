@@ -103,7 +103,7 @@ begin
 
   contador : contador_m
     generic map (
-        M => 7,
+        M => 8,
         N => 3
     )
     port map (
