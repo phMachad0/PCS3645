@@ -5,6 +5,7 @@ use ieee.math_real.all;
 
 entity sonar_fd is
     port(
+        --sinais de dados
         clock : in std_logic;
         reset : in std_logic;
         echo  : in std_logic;
@@ -182,7 +183,7 @@ begin
 
     contador_angulos: contadorg_updown_m
     generic map (
-        M => 7
+        M => 8
     )
     port map (
         clock => clock,
