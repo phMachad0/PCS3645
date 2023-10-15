@@ -35,7 +35,14 @@ architecture tb of sonar_tb is
         pwm                : out std_logic;
         saida_serial       : out std_logic;
         fim_posicao        : out std_logic;
-        db_estado          : out std_logic_vector(6 downto 0)
+        
+        --7 segmentos
+        sel_db       :  in std_logic; --escolher uma chave para conectar no pin planner
+        db_estado    : out std_logic_vector(6 downto 0); --conecta no hex5
+        db_angulo    : out std_logic_vector(6 downto 0); --conecta no hex4
+        db_hex0      : out std_logic_vector(6 downto 0);
+        db_hex1      : out std_logic_vector(6 downto 0);
+        db_hex2      : out std_logic_vector(6 downto 0)
     );
   end component;
   
@@ -49,8 +56,6 @@ architecture tb of sonar_tb is
   signal pwm_out          : std_logic := '0';
   signal saida_serial_out : std_logic := '1';
   signal fim_posicao_out  : std_logic := '0';
-  signal db_estado_out    : std_logic_vector (6 downto 0) := "0000000";
-
 
   -- Configurações do clock
   constant clockPeriod   : time      := 20 ns; -- clock de 50MHz
@@ -70,7 +75,10 @@ architecture tb of sonar_tb is
         ( 2,  353),   --   6cm  ( 353us)
         ( 3,  588),   --   10cm ( 588us)
         ( 4,  882),   --   15cm ( 882us)
-        ( 5, 1176)    --   15cm (1176us)
+        ( 5, 1176),   --   20cm (1176us)
+        ( 6, 59),     --    1cm (  59us)
+        ( 7, 1745),   --   30cm (1745us)
+        ( 8, 1176)    --   15cm (1176us)
       );
 
   signal larguraPulso: time := 1 ns;
@@ -92,7 +100,8 @@ begin
            pwm          => pwm_out,
            saida_serial => saida_serial_out,
            fim_posicao  => fim_posicao_out,
-           db_estado    => db_estado_out
+
+           sel_db => '0'
        );
 
   -- geracao dos sinais de entrada (estimulos)

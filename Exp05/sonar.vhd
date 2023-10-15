@@ -13,14 +13,13 @@ entity sonar is
         saida_serial : out std_logic;
         fim_posicao  : out std_logic;
 
-        --depuracao
-        db_estado    : out std_logic_vector(3 downto 0);
-        db_estado_sensor: out std_logic_vector(3 downto 0);
-        db_estado_serial: out std_logic_vector(3 downto 0);
-        db_medida0: out std_logic_vector(3 downto 0);
-        db_medida1: out std_logic_vector(3 downto 0);
-        db_medida2: out std_logic_vector(3 downto 0);
-        db_angulo : out std_logic_vector(2 downto 0)
+        --7 segmentos
+        sel_db       :  in std_logic; --escolher uma chave para conectar no pin planner
+        db_estado    : out std_logic_vector(6 downto 0); --conecta no hex5
+        db_angulo    : out std_logic_vector(6 downto 0); --conecta no hex4
+        db_hex0      : out std_logic_vector(6 downto 0);
+        db_hex1      : out std_logic_vector(6 downto 0);
+        db_hex2      : out std_logic_vector(6 downto 0)
     );
 end entity;
 
@@ -85,10 +84,37 @@ architecture structure of sonar is
             db_estado_serial : out std_logic_vector(3 downto 0)
         );
     end component;
+
+    component hexa7seg is
+        port (
+            hexa : in  std_logic_vector(3 downto 0);
+            sseg : out std_logic_vector(6 downto 0)
+        );
+    end component;
+
+    component mux_2x1_n is
+        generic (
+            constant BITS: integer := 4
+        );
+        port(
+            D1      : in  std_logic_vector (BITS-1 downto 0);
+            D0      : in  std_logic_vector (BITS-1 downto 0);
+            SEL     : in  std_logic;
+            MUX_OUT : out std_logic_vector (BITS-1 downto 0)
+        );
+    end component;
+
     signal s_partida_sensor, s_partida_serial, s_zera_contagem_angulos,
             s_prox_angulo, s_zera_timer: std_logic;
 
     signal s_pronto_sensor, s_pronto_serial, s_fim_angulos, s_timeout: std_logic;
+
+    signal s_db_medida0, s_db_medida1, s_db_medida2, s_db_estado_sensor,
+           s_db_estado_serial, s_db_estado : std_logic_vector(3 downto 0);
+    signal s_db_angulo : std_logic_vector(2 downto 0);
+    signal s_mux_out   : std_logic_vector(11 downto 0);
+    signal s_d1_mux, s_d0_mux : std_logic_vector(11 downto 0);
+    signal s_hex4             : std_logic_vector(3 downto 0);
 begin
     UC: sonar_uc port map(
         clock => clock,
@@ -106,7 +132,7 @@ begin
         fim_angulos => s_fim_angulos,
         timeout => s_timeout,
 
-        db_estado => db_estado
+        db_estado => s_db_estado
     );
 
     FD: sonar_fd port map (
@@ -127,13 +153,48 @@ begin
         fim_angulos => s_fim_angulos,
         timeout => s_timeout,
 
-        db_medida0 => db_medida0,
-        db_medida1 => db_medida1,
-        db_medida2 => db_medida2,
-        db_angulo => db_angulo,
-        db_estado_sensor => db_estado_sensor,
-        db_estado_serial => db_estado_serial
+        db_medida0 => s_db_medida0,
+        db_medida1 => s_db_medida1,
+        db_medida2 => s_db_medida2,
+        db_angulo => s_db_angulo,
+        db_estado_sensor => s_db_estado_sensor,
+        db_estado_serial => s_db_estado_serial
+    );
+
+    s_d0_mux <= s_db_medida2 & s_db_medida1 & s_db_medida0;
+    s_d1_mux <= x"0" & s_db_estado_sensor & s_db_estado_serial;
+    MUX: mux_2x1_n
+    generic map (
+        BITS => 12
+    )
+    port map (
+        D0 => s_d0_mux,
+        D1 => s_d1_mux,
+        SEL => sel_db,
+        MUX_OUT => s_mux_out
     );
     
+    HEX0: hexa7seg port map (
+        hexa => s_mux_out(3 downto 0),
+        sseg => db_hex0
+    );
+    HEX1: hexa7seg port map (
+        hexa => s_mux_out(7 downto 4),
+        sseg => db_hex1
+    );
+    HEX2: hexa7seg port map (
+        hexa => s_mux_out(11 downto 8),
+        sseg => db_hex2
+    );
 
+    s_hex4 <= '0' & s_db_angulo;
+
+    HEX4: hexa7seg port map (
+        hexa => s_hex4,
+        sseg => db_angulo
+    );
+    HEX5: hexa7seg port map (
+        hexa => s_db_estado,
+        sseg => db_estado
+    );
 end architecture;

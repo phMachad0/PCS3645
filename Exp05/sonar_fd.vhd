@@ -198,7 +198,8 @@ begin
 
     contador_timer: contador_m
     generic map (
-        M => 100000000,
+        M => 1000, --para simulacao
+        --M => 100000000, --para experiencia
         N => 27
     )
     port map (
