@@ -11,3 +11,6 @@
 *.cf
 *.json
 *.zip
+*.mti
+*.mpf
+*.wlf
