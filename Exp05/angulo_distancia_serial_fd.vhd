@@ -6,10 +6,8 @@ entity angulo_distancia_serial_fd is
   (
     clock        : in std_logic;
     reset        : in std_logic;
-    angulo       : in std_logic_vector (2 downto 0);
-    medida0      : in std_logic_vector (3 downto 0);
-    medida1      : in std_logic_vector (3 downto 0);
-    medida2      : in std_logic_vector (3 downto 0);
+    angulo_ascii : in std_logic_vector (23 downto 0);
+    medida       : in std_logic_vector (11 downto 0);
     saida_serial : out std_logic;
 
     --entradas de controle
@@ -78,42 +76,27 @@ architecture structure of angulo_distancia_serial_fd is
     );
   end component;
 
-  signal s_mux_angulo_ascii : std_logic_vector(27 downto 0);
-  signal s_caractere_ascii  : std_logic_vector(6 downto 0);
+  signal s_caractere_ascii  : std_logic_vector(7 downto 0);
   signal s_sel_digito       : std_logic_vector(2 downto 0);
+  signal medida0, medida1, medida2 : std_logic_vector(7 downto 0);
 begin
 
-  mux_8x1_angulo : mux_8x1_n
-    generic map (
-        BITS => 28
-    )
-    port map
-    (
-        D7      => "0110001011011001100000101100", --160,
-        D6      => "0110001011010001100000101100", --140,
-        D5      => "0110001011001001100000101100", --120,
-        D4      => "0110001011000001100000101100", --100,
-        D3      => "0110000011100001100000101100", --080,
-        D2      => "0110000011011001100000101100", --060,
-        D1      => "0110000011010001100000101100", --040,
-        D0      => "0110000011001001100000101100", --020,
-        SEL     => angulo,
-        MUX_OUT => s_mux_angulo_ascii
-    );
-
+  medida0 <= "0011" & medida(3 downto 0);
+  medida1 <= "0011" & medida(7 downto 4);
+  medida2 <= "0011" & medida(11 downto 8);
   mux_8x1_caractere : mux_8x1_n
     generic map (
-        BITS => 7
+        BITS => 8
     )
     port map (
-        D7      => "0100011",
-        D6      => "011" & medida0,
-        D5      => "011" & medida1,
-        D4      => "011" & medida2,
-        D3      => s_mux_angulo_ascii(6 downto 0),
-        D2      => s_mux_angulo_ascii(13 downto 7),
-        D1      => s_mux_angulo_ascii(20 downto 14),
-        D0      => s_mux_angulo_ascii(27 downto 21),
+        D7      => "00100011",
+        D6      => medida0,
+        D5      => medida1,
+        D4      => medida2,
+        D3      => "00101100",
+        D2      => angulo_ascii(7 downto 0),
+        D1      => angulo_ascii(15 downto 8),
+        D0      => angulo_ascii(23 downto 16),
         SEL     => s_sel_digito,
         MUX_OUT => s_caractere_ascii
     );
@@ -136,7 +119,7 @@ begin
         clock           => clock,
         reset           => reset,
         partida         => partida_serial,
-        dados_ascii     => s_caractere_ascii,
+        dados_ascii     => s_caractere_ascii(6 downto 0),
         saida_serial    => saida_serial,
         pronto          => pronto_serial,
         db_clock        => open,

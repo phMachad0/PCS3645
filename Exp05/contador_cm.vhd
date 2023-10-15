@@ -77,7 +77,7 @@ begin
         tick       => s_tick
     );
 
-    UC: entity work.contador_cm_uc
+    UC: contador_cm_uc
     port map(
         clock      => clock,
         reset      => reset,

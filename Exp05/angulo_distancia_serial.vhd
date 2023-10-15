@@ -7,10 +7,8 @@ entity angulo_distancia_serial is
     clock   : in std_logic;
     reset   : in std_logic;
     partida : in std_logic;
-    angulo  : in std_logic_vector(2 downto 0);
-    medida0 : in std_logic_vector(3 downto 0);
-    medida1 : in std_logic_vector(3 downto 0);
-    medida2 : in std_logic_vector(3 downto 0);
+    angulo_ascii : in std_logic_vector (23 downto 0);
+    medida       : in std_logic_vector (11 downto 0);
 
     saida_serial : out std_logic;
     pronto       : out std_logic;
@@ -24,22 +22,20 @@ architecture structure of angulo_distancia_serial is
   component angulo_distancia_serial_fd is
     port
     (
-      clock        : in std_logic;
-      reset        : in std_logic;
-      angulo       : in std_logic_vector (2 downto 0);
-      medida0      : in std_logic_vector (3 downto 0);
-      medida1      : in std_logic_vector (3 downto 0);
-      medida2      : in std_logic_vector (3 downto 0);
-      saida_serial : out std_logic;
-
-      --entradas de controle
-      partida_serial        : in std_logic;
-      zera_contagem_digitos : in std_logic;
-      prox_digito           : in std_logic;
-
-      --saidas de condição
-      pronto_serial : out std_logic;
-      fim_digitos   : out std_logic
+        clock        : in std_logic;
+        reset        : in std_logic;
+        angulo_ascii : in std_logic_vector (23 downto 0);
+        medida       : in std_logic_vector (11 downto 0);
+        saida_serial : out std_logic;
+    
+        --entradas de controle
+        partida_serial        : in std_logic;
+        zera_contagem_digitos : in std_logic;
+        prox_digito           : in std_logic;
+    
+        --saidas de condição
+        pronto_serial         : out std_logic;
+        fim_digitos           : out std_logic
     );
   end component;
 
@@ -71,10 +67,8 @@ begin
     FD: angulo_distancia_serial_fd port map (
       clock        => clock,
       reset        => reset,
-      angulo       => angulo,
-      medida0      => medida0,
-      medida1      => medida1,
-      medida2      => medida2,
+      angulo_ascii => angulo_ascii,
+      medida       => medida,
       saida_serial => saida_serial,
 
       --entradas de controle

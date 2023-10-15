@@ -1,5 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+use ieee.math_real.all;
 
 entity sonar_fd is
     port(
@@ -50,19 +52,17 @@ architecture structural of sonar_fd is
     component angulo_distancia_serial is
         port
         (
-          clock   : in std_logic;
-          reset   : in std_logic;
-          partida : in std_logic;
-          angulo  : in std_logic_vector(2 downto 0);
-          medida0 : in std_logic_vector(3 downto 0);
-          medida1 : in std_logic_vector(3 downto 0);
-          medida2 : in std_logic_vector(3 downto 0);
-      
-          saida_serial : out std_logic;
-          pronto       : out std_logic;
-      
-          --depuracao
-          db_estado : out std_logic_vector(3 downto 0)
+            clock   : in std_logic;
+            reset   : in std_logic;
+            partida : in std_logic;
+            angulo_ascii : in std_logic_vector (23 downto 0);
+            medida       : in std_logic_vector (11 downto 0);
+        
+            saida_serial : out std_logic;
+            pronto       : out std_logic;
+        
+            --depuracao
+            db_estado : out std_logic_vector(3 downto 0)
         );
     end component;
 
@@ -110,6 +110,29 @@ architecture structural of sonar_fd is
         );
     end component;
 
+    component contadorg_updown_m is
+        generic (
+            constant M: integer := 50 -- modulo do contador
+        );
+        port (
+            clock  : in  std_logic;
+            zera_as: in  std_logic;
+            zera_s : in  std_logic;
+            conta  : in  std_logic;
+            Q      : out std_logic_vector (natural(ceil(log2(real(M))))-1 downto 0);
+            inicio : out std_logic;
+            fim    : out std_logic;
+            meio   : out std_logic 
+       );
+    end component;
+
+    component rom_angulos_8x24 is
+        port (
+            endereco : in  std_logic_vector(2 downto 0);
+            saida    : out std_logic_vector(23 downto 0)
+        ); 
+    end component;
+
     component mux_2x1_n is
         generic (
             constant BITS: integer := 4
@@ -123,7 +146,8 @@ architecture structural of sonar_fd is
     end component;
     signal s_saida_serial_trena: std_logic;
     signal s_medida : std_logic_vector(11 downto 0);
-    signal s_angulo : std_logic_vector(2 downto 0);
+    signal s_angulo_ascii : std_logic_vector(23 downto 0);
+    signal s_angulo_sel : std_logic_vector(2 downto 0);
 begin
     sensor : interface_hcsr04 port map(
         clock => clock,
@@ -137,14 +161,17 @@ begin
         db_estado => db_estado_sensor
     );
 
+    ROM: rom_angulos_8x24 port map(
+        endereco => s_angulo_sel,
+        saida => s_angulo_ascii
+    );
+
     serial: angulo_distancia_serial port map (
         clock   => clock,
         reset   => reset,
         partida => partida_serial,
-        angulo  => s_angulo,
-        medida0 => s_medida(3 downto 0),
-        medida1 => s_medida(7 downto 4),
-        medida2 => s_medida(11 downto 8),
+        angulo_ascii  => s_angulo_ascii,
+        medida  => s_medida,
       
         saida_serial => saida_serial,
         pronto       => pronto_serial,
@@ -153,16 +180,17 @@ begin
         db_estado => db_estado_serial
     );
 
-    contador_angulos: contador_m
+    contador_angulos: contadorg_updown_m
     generic map (
-        M => 7,
-        N => 3
+        M => 7
     )
     port map (
         clock => clock,
-        zera => zera_contagem_angulos,
+        zera_as => reset,
+        zera_s => zera_contagem_angulos,
         conta => prox_angulo,
-        Q => s_angulo,
+        Q => s_angulo_sel,
+        inicio => open,
         fim => fim_angulos,
         meio => open
     );
@@ -184,7 +212,7 @@ begin
     servo: controle_servo_3 port map (
         clock      => clock,
         reset      => reset,
-        posicao    => s_angulo,
+        posicao    => s_angulo_sel,
         pwm        => pwm,
         db_reset   => open,
         db_pwm     => open,
