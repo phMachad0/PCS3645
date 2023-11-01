@@ -14,3 +14,7 @@
 *.mti
 *.mpf
 *.wlf
+*.qar
+*.qarlog
+*.qdf
+*.qws
