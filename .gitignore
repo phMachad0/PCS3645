@@ -11,3 +11,10 @@
 *.cf
 *.json
 *.zip
+*.mti
+*.mpf
+*.wlf
+*.qar
+*.qarlog
+*.qdf
+*.qws
